@@ -239,18 +239,20 @@ app.post('/api/chat/send', async (req, res) => {
             //     payload.imageFullsize = image;
             // }
 
-            await axios.post('https://notify-api.line.me/api/notify', payload, {
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                    'Authorization': 'Bearer 31RCU65rvR46z0BYuow0j7Y7PUDOuU3mpXiueEoWcnc',
-                },
-            })
-            .then((response) => {
-                console.log(response.data);
-            })
-            .catch((error) => {
-                console.error(error);
-            });
+            if (username === 'ou' || username === 'Ou') {
+                await axios.post('https://notify-api.line.me/api/notify', payload, {
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                        'Authorization': 'Bearer 31RCU65rvR46z0BYuow0j7Y7PUDOuU3mpXiueEoWcnc',
+                    },
+                })
+                .then((response) => {
+                    console.log(response.data);
+                })
+                .catch((error) => {
+                    console.error(error);
+                });
+            }
 
             console.log("Username: ", username);
         } catch (error) {
