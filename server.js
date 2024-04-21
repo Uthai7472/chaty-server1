@@ -86,6 +86,8 @@ app.get('/', async (req, res) => {
         //         console.log('Drop tb_chats completed');
         //     }
         // });
+        res.send('Server running');
+        console.log('Server running');
 
     } catch (error) {
         console.error("Error : ", error);
