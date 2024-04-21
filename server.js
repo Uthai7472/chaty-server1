@@ -46,37 +46,37 @@ const isAuthenticated = (req, res, next) => {
 
 app.get('/', async (req, res) => {
     try {
-        await connection.query(`
-            CREATE TABLE IF NOT EXISTS tb_users (
-                id_table INT AUTO_INCREMENT PRIMARY KEY,
-                id VARCHAR(10),
-                username VARCHAR(30),
-                password VARCHAR(30)
-            )
-        `, (err, results) => {
-            if (err) {
-                console.log(err);
-            } else {
-                console.log('Create tb_users completed');
-            }
-        });
+        // await connection.query(`
+        //     CREATE TABLE IF NOT EXISTS tb_users (
+        //         id_table INT AUTO_INCREMENT PRIMARY KEY,
+        //         id VARCHAR(10),
+        //         username VARCHAR(30),
+        //         password VARCHAR(30)
+        //     )
+        // `, (err, results) => {
+        //     if (err) {
+        //         console.log(err);
+        //     } else {
+        //         console.log('Create tb_users completed');
+        //     }
+        // });
 
-        await connection.query(`
-            CREATE TABLE IF NOT EXISTS tb_chats (
-                id_table INT AUTO_INCREMENT PRIMARY KEY,
-                username VARCHAR(30),
-                message TEXT,
-                image_url TEXT,
-                timestamp TIME,
-                date DATE
-            )
-        `, (err, results) => {
-            if (err) {
-                console.log(err);
-            } else {
-                console.log('Create tb_chats completed');
-            }
-        });
+        // await connection.query(`
+        //     CREATE TABLE IF NOT EXISTS tb_chats (
+        //         id_table INT AUTO_INCREMENT PRIMARY KEY,
+        //         username VARCHAR(30),
+        //         message TEXT,
+        //         image_url TEXT,
+        //         timestamp TIME,
+        //         date DATE
+        //     )
+        // `, (err, results) => {
+        //     if (err) {
+        //         console.log(err);
+        //     } else {
+        //         console.log('Create tb_chats completed');
+        //     }
+        // });
         // await connection.query(`
         //     DROP TABLE tb_chats
         // `, (err, results) => {
