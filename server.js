@@ -1,6 +1,7 @@
 require('dotenv').config();
 
 const express = require('express');
+const axios = require('axios');
 const mysql = require('mysql');
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
@@ -227,6 +228,28 @@ app.post('/api/chat/send', async (req, res) => {
                 } else {
                     res.status(200).json({ message: 'Send message successful' });
                 }
+            });
+
+            // Send to line notify
+            let payload = {
+                message: message,
+            };
+            // if (image_url) {
+            //     payload.imageThumbnail = image;
+            //     payload.imageFullsize = image;
+            // }
+
+            await axios.post('https://notify-api.line.me/api/notify', payload, {
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'Authorization': 'Bearer 31RCU65rvR46z0BYuow0j7Y7PUDOuU3mpXiueEoWcnc',
+                },
+            })
+            .then((response) => {
+                console.log(response.data);
+            })
+            .catch((error) => {
+                console.error(error);
             });
 
             console.log("Username: ", username);
