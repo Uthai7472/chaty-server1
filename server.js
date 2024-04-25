@@ -7,6 +7,9 @@ const session = require('express-session');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const multer = require('multer');
+const path = require('path');
+const fs = require('fs');
 const port = 3002;
 
 const app = express();
@@ -44,6 +47,17 @@ const isAuthenticated = (req, res, next) => {
         res.send('Can\'t Login');
     }
 };
+
+// Setup multer storage
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'public/Images/')
+    },
+    filename: function (req, file, cb) {
+        cb(null, file.originalname)
+    }
+});
+const uploadImage = multer({storage: storage});
 
 app.get('/', async (req, res) => {
     try {
@@ -270,16 +284,52 @@ app.post('/api/chat/send', async (req, res) => {
 app.get('/api/chat/show_message', async (req, res) => {
     try {
         await connection.query(`
-            SELECT * FROM tb_chats
+            SELECT id_table, username, date, timestamp, message, image_url
+            FROM tb_chats
         `, (err, results) => {
             if (err) {
                 console.log(err);
+                res.status(500).json({ error: 'An error occurs while fetching message' });
             } else {
-                res.send(results);
+            
+                res.json(results);
             }
         })
     } catch (error) {
         console.error(error);
         res.status(500);
     }
+});
+
+// Define the API endpoint to serve the image file
+app.get('/api/chat/get-image/:imageName', (req, res) => {
+    try {
+        const imageName = req.params.imageName;
+        const imagePath = path.join(__dirname, 'public/Images', imageName);
+
+        // Check if the image file exists
+        if (fs.existsSync(imagePath)) {
+            // If the image file exists, send it as a response
+            const imageData = fs.readFileSync(imagePath);
+            res.contentType('image/jpeg'); // Set the appropriate content type based on the image type
+            res.send(imageData);
+        } else {
+            // If the image file does not exist, send a 404 Not Found response
+            res.status(404).send('Image not found');
+        }
+    } catch (error) {
+        console.error('Error while fetching image:', error);
+        res.status(500).send('Internal server error');
+    }
+});
+
+app.post('/api/upload/image', uploadImage.single('image'), (req, res) => {
+    if (!req.file) {
+        console.log('No file uploaded');
+        return res.status(400).send('No file uploaded');
+    }
+
+    //File uploaded success
+    console.log('File uploaded successfully');
+    res.send('File uploaded successfully');
 });
