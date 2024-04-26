@@ -52,7 +52,7 @@ app.use(express.static('public'));
 // Setup multer storage
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, 'opt/render/project/src/public/Images/')
+        cb(null, 'public/Images/')
     },
     filename: function (req, file, cb) {
         cb(null, file.originalname)
@@ -306,7 +306,7 @@ app.get('/api/chat/show_message', async (req, res) => {
 app.get('/api/chat/get-image/:imageName', (req, res) => {
     try {
         const imageName = req.params.imageName;
-        let imagePath = path.join(__dirname, 'public/Images', imageName);
+        let imagePath = path.join('public/Images', imageName);
 
         // Check if the image file exists
         if (fs.existsSync(imagePath)) {
