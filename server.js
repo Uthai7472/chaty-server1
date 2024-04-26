@@ -321,6 +321,10 @@ app.get('/api/chat/get-image/:imageName', (req, res) => {
             const imageData = fs.readFileSync(imagePath);
             res.contentType('image/jpeg'); // Set the appropriate content type based on the image type
             res.send(imageData);
+            
+            if (!fs.existsSync(imagePath)) {
+                res.status(404).send(`Image not found, imagePath: ${imagePath}`)
+            }
             // res.status(404).send(`Image not found, ImageName: ${imageName} ImagePath: ${imagePath}`);
         }
     } catch (error) {
