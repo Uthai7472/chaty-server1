@@ -48,6 +48,7 @@ const isAuthenticated = (req, res, next) => {
     }
 };
 
+app.use(express.static('public'));
 // Setup multer storage
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -315,7 +316,7 @@ app.get('/api/chat/get-image/:imageName', (req, res) => {
             res.send(imageData);
         } else {
             // If the image file does not exist, send a 404 Not Found response
-            res.status(404).send('Image not found');
+            res.status(404).send(`Image not found, ImageName: ${imageName} ImagePath: ${imagePath}`);
         }
     } catch (error) {
         console.error('Error while fetching image:', error);
