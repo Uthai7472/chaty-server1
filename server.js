@@ -37,7 +37,7 @@ const sessionMiddleware = session({
 });
 app.use(sessionMiddleware);
 app.use(express.json());
-app.use(express.static('static'));
+
 app.use(bodyParser.urlencoded({ extended: true }));
 const isAuthenticated = (req, res, next) => {
     if (req.cookies.isAuthenticated) {
@@ -52,7 +52,7 @@ app.use(express.static('public'));
 // Setup multer storage
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, 'public/Images/')
+        cb(null, 'opt/render/project/src/public/Images/')
     },
     filename: function (req, file, cb) {
         cb(null, file.originalname)
