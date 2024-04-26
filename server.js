@@ -18,6 +18,8 @@ app.use(express.urlencoded({extended: true}));
 app.use(bodyParser.json());
 app.use(cors());
 
+app.use(express.static('public'));
+
 const server = app.listen(port, '0.0.0.0', () => {
     console.log(`Server is running on port ${port}`);
 })
