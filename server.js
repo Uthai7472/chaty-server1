@@ -315,17 +315,17 @@ app.get('/api/chat/get-image/:imageName', (req, res) => {
             res.contentType('image/jpeg'); // Set the appropriate content type based on the image type
             res.send(imageData);
         } else {
-            // When deploy --> image path changed
-            imagePath = path.join(__dirname, 'opt/render/project/src', imageName);
-            // If the image file does not exist, send a 404 Not Found response
-            const imageData = fs.readFileSync(imagePath);
-            res.contentType('image/jpeg'); // Set the appropriate content type based on the image type
-            res.send(imageData);
+            // // When deploy --> image path changed
+            // imagePath = path.join(__dirname, 'opt/render/project/src', imageName);
+            // // If the image file does not exist, send a 404 Not Found response
+            // const imageData = fs.readFileSync(imagePath);
+            // res.contentType('image/jpeg'); // Set the appropriate content type based on the image type
+            // res.send(imageData);
             
-            if (!fs.existsSync(imagePath)) {
-                res.status(404).send(`Image not found, imagePath: ${imagePath}`)
-            }
-            // res.status(404).send(`Image not found, ImageName: ${imageName} ImagePath: ${imagePath}`);
+            // if (!fs.existsSync(imagePath)) {
+            //     res.status(404).send(`Image not found, imagePath: ${imagePath}`)
+            // }
+            res.status(404).send(`Image not found, ImageName: ${imageName} ImagePath: ${imagePath}`);
         }
     } catch (error) {
         console.error('Error while fetching image:', error);
