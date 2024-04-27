@@ -48,7 +48,7 @@ const isAuthenticated = (req, res, next) => {
     }
 };
 
-app.use(express.static('public'));
+app.use(express.static('public/Images'));
 // Setup multer storage
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
