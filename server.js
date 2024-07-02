@@ -13,6 +13,8 @@ const fs = require('fs');
 const port = 3002;
 
 const app = express();
+const router = express.Router();
+
 app.use(cookieParser());
 app.use(express.urlencoded({extended: true}));
 app.use(bodyParser.json());
@@ -27,7 +29,8 @@ const connection = mysql.createPool({
     port: process.env.MYSQL_PORT,
     user: process.env.MYSQL_USERNAME,
     password: process.env.MYSQL_PASSWORD,
-    database: process.env.MYSQL_DB,  
+    database: process.env.MYSQL_DB, 
+    charset: 'utf8mb4' 
 });
 
 const sessionMiddleware = session({
@@ -77,22 +80,23 @@ app.get('/', async (req, res) => {
         //     }
         // });
 
-        // await connection.query(`
-        //     CREATE TABLE IF NOT EXISTS tb_chats (
-        //         id_table INT AUTO_INCREMENT PRIMARY KEY,
-        //         username VARCHAR(30),
-        //         message TEXT,
-        //         image_url TEXT,
-        //         timestamp TIME,
-        //         date DATE
-        //     )
-        // `, (err, results) => {
-        //     if (err) {
-        //         console.log(err);
-        //     } else {
-        //         console.log('Create tb_chats completed');
-        //     }
-        // });
+
+        await connection.query(`
+            CREATE TABLE IF NOT EXISTS tb_chats (
+                id_table INT AUTO_INCREMENT PRIMARY KEY,
+                username VARCHAR(30),
+                message TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+                image_url TEXT,
+                timestamp TIME,
+                date DATE
+            ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+        `, (err, results) => {
+            if (err) {
+                console.log(err);
+            } else {
+                console.log('Create tb_chats completed');
+            }
+        });
         // await connection.query(`
         //     DROP TABLE tb_chats
         // `, (err, results) => {
@@ -250,7 +254,7 @@ app.post('/api/chat/send', async (req, res) => {
                 message: message,
             };
             // if (image_url) {
-            //     payload.imageThumbnail = image;
+            //     payload.imageThumbnail = ima`ge;
             //     payload.imageFullsize = image;
             // }
 
